@@ -1,0 +1,33 @@
+{
+  "name": "qb1-map",
+  "version": "1.0.0",
+  "description": "qb1-map",
+  "homepage": "https://github.com/quicbit-js/qb1-map",
+  "url": "https://github.com/quicbit-js/qb1-map/issues",
+  "email": "support@quicbit.com",
+  "repository": "quicbit-js/qb1-map",
+  "dependencies": {},
+  "devDependencies": {
+    "tape": "^5.6.3",
+    "test-kit": "^2.9.2"
+  },
+  "scripts": {
+    "test": "tape test.js",
+    "cov": "tap --coverage-report=html test.js"
+  },
+  "keywords": [
+    "fast",
+    "compact",
+    "minimal",
+    "qb",
+    "qb1",
+    "quicbit",
+    "data",
+    "performance"
+  ],
+  "files": [
+    "index.js"
+  ],
+  "author": "Matthew Voss",
+  "license": "ISC"
+}
