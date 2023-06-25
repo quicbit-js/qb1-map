@@ -15,11 +15,51 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 var test = require('test-kit').tape()
-var mod = require('.')
+var qbmap = require('.')
 
-test('something', function (t) {
-    t.table_assert([
-    ], function () {} )
+test('for_val function', function (t) {
+  var set1 = qbmap.string_set()
+  var vals = ['a', 'b']
+  qbmap.for_val(vals, function (v, i) { t.same(vals[i], v, 'array iteration') })
+  qbmap.for_val(vals, function (v) {
+    set1.put(v)
+  })
+  t.same(set1.to_obj(), vals, 'set has all values')
+
+  qbmap.for_val(set1, function (v, i) { t.same(v.toString(), vals[i], 'vals[' + i + ']') })
+  t.end()
 })
 
+
+test('first and last functions', function (t) {
+  t.table_assert([
+    ['keys', 'exp'],
+    [[], [undefined, undefined]],
+    // [ [ 'a' ],                 ['a', 'a'] ],
+    [['a', 'b', 'a'], ['a', 'b']],
+    [['a', 'b', 'c'], ['a', 'c']],
+    [['a', 'b', 'c', 'a'], ['a', 'c']],
+  ], function (vals) {
+    var set = qbmap.string_set()
+    vals.forEach(function (v) { set.put(v) })
+
+    return [qbmap.first(set) && qbmap.first(set).toString(), qbmap.last(set) && qbmap.last(set).toString()]
+  })
+})
+
+test('first and last', function (t) {
+  var superset = qbmap.string_set()
+  var set1 = superset.hset()
+
+  var abc = ['a', 'b', 'c'].map(function (v) { return superset.put(v).to_obj() })
+  t.same(abc, ['a', 'b', 'c'])
+  t.same(superset.to_obj(), ['a', 'b', 'c'], 'to_obj()')
+  t.same(superset.first.to_obj(), 'a', 'first()')
+  t.same(superset.last.to_obj(), 'c', 'last()')
+
+  t.same(set1.first, undefined, 'first() undefined')
+  t.same(set1.last, undefined, 'last() undefined')
+  t.same(set1.to_obj(), [], 'to_obj() empty')
+  t.end()
+})
 
