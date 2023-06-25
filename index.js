@@ -92,8 +92,17 @@ function last (a) {
   return a.last ? a.last : a[a.length - 1]
 }
 
+// create hash from previous, buffer, and tcode
+function hash (a, b) {
+  // h = ((h << 5) + h) + src[i]                 // djb2 - by berstein 269/289741 (3.0 seconds)
+  // h = ((h * 33) ^ src[i])                     // xor - by berstein 251/289741 (2.8 seconds)
+  // h = (h << 6) + (h << 16) - h + src[i]       // sdbm 3/289741 (3.5 seconds)
+  return 0x7FFFFFFF & ((a * 33) ^ b)          // xor - by berstein
+}
+
 module.exports = {
   for_val: for_val,
   first: first,
   last: last,
+  hash: hash,
 }
